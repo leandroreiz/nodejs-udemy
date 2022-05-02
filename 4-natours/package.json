@@ -4,7 +4,7 @@
   "description": "Learning Node.Js, Express and Mongo DB",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon server.js"
   },
   "author": "Leandro Reis",
   "license": "ISC",
