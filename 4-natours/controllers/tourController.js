@@ -11,7 +11,31 @@ const tours = JSON.parse(
 );
 
 // ----------------------------------------------
-// Controllers
+// Middlewares
+// ----------------------------------------------
+
+// Validade/check ID
+exports.checkId = (req, res, next, id) => {
+  if (id > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  next();
+};
+
+// Check for name and price properties on body
+exports.checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price)
+    return res
+      .status(400)
+      .json({ status: 'fail', message: 'Missing name or price' });
+
+  next();
+};
+
 // ----------------------------------------------
 // Get all tours
 // ----------------------------------------------
@@ -30,23 +54,14 @@ exports.getAllTours = (req, res) => {
 // Get a tour
 // ----------------------------------------------
 exports.getTour = (req, res) => {
-  const tour = tours.find(tour => tour.id === +req.params.id);
+  const tour = tours.find(el => el.id === +req.params.id);
 
-  try {
-    if (!tour) throw new Error('Invalid ID');
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        tour,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message,
-    });
-  }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour,
+    },
+  });
 };
 
 // ----------------------------------------------
@@ -61,7 +76,7 @@ exports.createTour = (req, res) => {
   fs.writeFile(
     `${__dirname}/dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
-    err => {
+    () => {
       res.status(201).json({
         status: 'success',
         data: {

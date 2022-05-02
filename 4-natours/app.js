@@ -19,7 +19,9 @@ const app = express();
 // ----------------------------------------------
 
 // Http request logger
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 // Provide request body parsing
 app.use(express.json());
