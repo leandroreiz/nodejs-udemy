@@ -3,6 +3,7 @@
 // ----------------------------------------------
 const express = require('express');
 const {
+  aliasTopTours,
   getAllTours,
   getTour,
   createTour,
@@ -15,8 +16,8 @@ const {
 // ----------------------------------------------
 const router = express.Router();
 
-// Routes
 router.route('/').get(getAllTours).post(createTour);
+router.route('/top-tours').get(aliasTopTours, getAllTours);
 router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
 
 module.exports = router;
