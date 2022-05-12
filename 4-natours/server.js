@@ -1,8 +1,19 @@
 // ----------------------------------------------
 // Server
 // ----------------------------------------------
+
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+
+// ----------------------------------------------
+// Uncaught exception
+// ----------------------------------------------
+
+process.on('uncaughtException', err => {
+  console.log('Uncaught exception! Shutting down...');
+  console.log(err.name, err.message);
+  process.exit(1);
+});
 
 dotenv.config({ path: './config.env' });
 
@@ -17,6 +28,7 @@ const db = process.env.DATABASE.replace(
 // ----------------------------------------------
 // Database connection
 // ----------------------------------------------
+
 mongoose
   .connect(db, {
     useNewUrlParser: true,
@@ -29,6 +41,7 @@ mongoose
 // ----------------------------------------------
 // Server connection
 // ----------------------------------------------
+
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
@@ -37,9 +50,10 @@ const server = app.listen(port, () => {
 // ----------------------------------------------
 // Unhandled rejection events
 // ----------------------------------------------
+
 process.on('unhandledRejection', err => {
-  console.log(err.name, err.message);
   console.log('Unhandled rejection! Shutting down...');
+  console.log(err.name, err.message);
 
   server.close(() => {
     process.exit(1);
