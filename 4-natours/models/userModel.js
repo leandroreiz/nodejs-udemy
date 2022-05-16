@@ -39,6 +39,9 @@ const userSchema = new mongoose.Schema({
       message: 'The passwords must match',
     },
   },
+  passwordChangedAt: {
+    type: Date,
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -51,11 +54,34 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// ----------------------------------------------
+// Validate password
+// ----------------------------------------------
+
 userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+// ----------------------------------------------
+// Check if user changed password after creation
+// ----------------------------------------------
+
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+
+    // Check if the password was changed after token creation
+    return JWTTimestamp < changedTimestamp;
+  }
+
+  // Password not changed
+  return false;
 };
 
 const User = mongoose.model('User', userSchema);

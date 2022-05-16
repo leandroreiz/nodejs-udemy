@@ -36,6 +36,20 @@ const handleValidationErrorDB = err => {
 };
 
 // ----------------------------------------------
+// Invalid JWT provided
+// ----------------------------------------------
+
+const handleJsonWebTokenError = () =>
+  new AppError('Invalid Token! Please log in again', 401);
+
+// ----------------------------------------------
+// JWT is expired
+// ----------------------------------------------
+
+const handleTokenExpiredError = () =>
+  new AppError('Your token has expired! Please log in again', 401);
+
+// ----------------------------------------------
 // Send error to development
 // ----------------------------------------------
 
@@ -64,6 +78,8 @@ const sendErrorProd = (err, res) => {
   // Programming or some unknown error
   // Don't leak error details to client
   else {
+    console.log('🔴 Unknown error:', err);
+
     res.status(500).json({
       status: 'error',
       message: 'Something went wrong!',
@@ -82,11 +98,13 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') sendErrorDev(err, res);
 
   if (process.env.NODE_ENV === 'production') {
-    let error;
-    // @BUG / FIXED: but still need to check if it is okay to use 'err' to pass as a parameter to 'handleCastErrorDB'
+    let error = { ...err };
+    // @BUG / FIXED: but still need to check if it is okay to use 'err' to pass as a parameter
     if (err.name === 'CastError') error = handleCastErrorDB(err);
     if (err.code === 11000) error = handleDuplicateFieldsDB(err);
     if (err.name === 'ValidationError') error = handleValidationErrorDB(err);
+    if (err.name === 'JsonWebTokenError') error = handleJsonWebTokenError();
+    if (err.name === 'TokenExpiredError') error = handleTokenExpiredError();
 
     sendErrorProd(error, res);
   }
