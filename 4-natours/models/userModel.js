@@ -56,6 +56,13 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// ----------------------------------------------
+// Middlewares
+// ----------------------------------------------
+
+// ----------------------------------------------
+// Encrypt password
+
 userSchema.pre('save', async function (next) {
   // Run this funcion only if password was modified
   if (!this.isModified('password')) return next();
@@ -67,12 +74,21 @@ userSchema.pre('save', async function (next) {
 });
 
 // ----------------------------------------------
+// Update password changed
+
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000; // hack to prevent errors due to db update
+  next();
+});
+
+// ----------------------------------------------
 // Instance Methods
 // ----------------------------------------------
 
 // ----------------------------------------------
 // Validate password
-// ----------------------------------------------
 
 userSchema.methods.correctPassword = async function (
   candidatePassword,
@@ -83,7 +99,6 @@ userSchema.methods.correctPassword = async function (
 
 // ----------------------------------------------
 // Verify if password was changed after token
-// ----------------------------------------------
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
@@ -102,7 +117,6 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 
 // ----------------------------------------------
 // Create password reset token
-// ----------------------------------------------
 
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString('hex');
