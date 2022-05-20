@@ -39,7 +39,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 });
 
 // ----------------------------------------------
-// Update user details
+// Update current user details
 // ----------------------------------------------
 
 exports.updateCurrentUser = catchAsync(async (req, res, next) => {
@@ -66,6 +66,19 @@ exports.updateCurrentUser = catchAsync(async (req, res, next) => {
     data: {
       user: updatedUser,
     },
+  });
+});
+
+// ----------------------------------------------
+// Inactivate current user
+// ----------------------------------------------
+
+exports.deleteCurrentUser = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, { active: false });
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
   });
 });
 
