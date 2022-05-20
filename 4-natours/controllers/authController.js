@@ -50,10 +50,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordChangedAt: req.body.passwordChangedAt,
   });
 
-  // Sign JWT
-  const token = signToken(newUser._id);
-
-  // Send token and user details
+  // Sign JWT & send token and user details
   createSendToken(newUser, 201, res);
 });
 
