@@ -39,7 +39,7 @@ const createSendToken = (user, statusCode, res) => {
   // Send cookie
   res.cookie('jwt', token, cookieOptions);
 
-  // Remove password to not show up on response object
+  // Remove password from output
   user.password = null;
 
   // Send response

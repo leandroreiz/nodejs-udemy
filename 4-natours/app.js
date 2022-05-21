@@ -8,6 +8,7 @@
 // ----------------------------------------------
 const express = require('express');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -17,13 +18,23 @@ const userRouter = require('./routes/userRoutes');
 const app = express();
 
 // ----------------------------------------------
-// Middleware
+// Global Middlewares
 // ----------------------------------------------
 
 // Http request logger
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// Rate limiter
+const limiter = rateLimit({
+  max: 3,
+  windowMs: 60 * 60 * 1000,
+  message:
+    'Too many consecutive requests were attempted! Please try again in an hour!',
+});
+
+app.use('/api', limiter);
 
 // Provide request body parsing
 app.use(express.json());
