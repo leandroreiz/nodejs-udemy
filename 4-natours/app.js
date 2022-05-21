@@ -4,11 +4,18 @@
 // Design: Jonas Schmedtmann
 // Coded by Leandro Reis
 // ----------------------------------------------
+
+// ----------------------------------------------
 // Imports
 // ----------------------------------------------
+
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const hpp = require('hpp');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -21,23 +28,48 @@ const app = express();
 // Global Middlewares
 // ----------------------------------------------
 
-// Http request logger
+// Set security HTTP headers
+app.use(helmet());
+
+// Http request logger for development environment
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Rate limiter
+// Limit requests from same API
 const limiter = rateLimit({
-  max: 3,
+  max: 100,
   windowMs: 60 * 60 * 1000,
   message:
     'Too many consecutive requests were attempted! Please try again in an hour!',
 });
-
 app.use('/api', limiter);
 
-// Provide request body parsing
-app.use(express.json());
+// Body parser, reading data from body into req.body
+app.use(express.json({ limit: '10kb' }));
+
+// Data sanitization against noSQL query injection
+app.use(mongoSanitize());
+
+// Data sanitization against XSS (using HTML injection)
+app.use(xss());
+
+// Prevent parameter pollution
+app.use(
+  hpp({
+    whitelist: [
+      'duration',
+      'ratingsAverage',
+      'ratingsQuantity',
+      'maxGroupSize',
+      'difficulty',
+      'price',
+    ],
+  })
+);
+
+// Serving static files
+app.use(express.static(`${__dirname}/public`));
 
 // ----------------------------------------------
 // Routes
