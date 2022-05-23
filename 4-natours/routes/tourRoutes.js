@@ -20,7 +20,7 @@ const reviewRouter = require('./reviewRoutes');
 // ----------------------------------------------
 const router = express.Router();
 
-// Review routes
+// Nested routes
 router.use('/:tourId/reviews', reviewRouter);
 
 // Custom routes
