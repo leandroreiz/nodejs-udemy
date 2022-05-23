@@ -13,11 +13,15 @@ const {
   getMonthlyPlan,
 } = require('../controllers/tourController');
 const { protect, restrictTo } = require('../controllers/authController');
+const reviewRouter = require('./reviewRoutes');
 
 // ----------------------------------------------
 // Routes
 // ----------------------------------------------
 const router = express.Router();
+
+// Review routes
+router.use('/:tourId/reviews', reviewRouter);
 
 // Custom routes
 router.route('/top-tours').get(aliasTopTours, getAllTours);

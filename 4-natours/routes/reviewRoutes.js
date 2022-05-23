@@ -10,7 +10,7 @@ const { protect, restrictTo } = require('../controllers/authController');
 // Create routes
 // ----------------------------------------------
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router
   .route('/')
