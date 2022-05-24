@@ -1,5 +1,7 @@
 # Complete Node.js, Express and MongoDB Bootcamp
 
-## Node.js basics
+## Possible Improvements
 
-a) What is node.js?
+- Implement maximum login attempts
+- Confirm user email address after first creating account
+- Implement two-factor authentication
