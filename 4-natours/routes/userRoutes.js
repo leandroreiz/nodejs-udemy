@@ -35,7 +35,7 @@ router.patch('/updateMyPassword', protect, updatePassword);
 router.patch('/updateCurrentUser', protect, updateCurrentUser);
 router.delete('/deleteCurrentUser', protect, deleteCurrentUser);
 
-router.route('/').get(getAllUsers).post(createUser);
+router.route('/').get(getAllUsers);
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 module.exports = router;

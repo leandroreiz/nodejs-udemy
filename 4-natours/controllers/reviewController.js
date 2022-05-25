@@ -7,6 +7,17 @@ const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
 
 // ----------------------------------------------
+// Middleware
+// ----------------------------------------------
+
+exports.setTourUserIds = (req, res, next) => {
+  // Allow nested routes
+  if (!req.body.tour) req.body.tour = req.params.tourId;
+  if (!req.body.user) req.body.user = req.user.id;
+  next();
+};
+
+// ----------------------------------------------
 // Get reviews
 // ----------------------------------------------
 
@@ -30,10 +41,6 @@ exports.getReviews = catchAsync(async (req, res, next) => {
 // ----------------------------------------------
 
 exports.createReview = catchAsync(async (req, res, next) => {
-  // Allow nested routes
-  if (!req.body.tour) req.body.tour = req.params.tourId;
-  if (!req.body.user) req.body.user = req.user.id;
-
   const newReview = await Review.create(req.body);
 
   res.status(201).json({
@@ -49,3 +56,9 @@ exports.createReview = catchAsync(async (req, res, next) => {
 // ----------------------------------------------
 
 exports.deleteReview = factory.deleteOne(Review);
+
+// ----------------------------------------------
+// Update review
+// ----------------------------------------------
+
+exports.updateReview = factory.updateOne(Review);
