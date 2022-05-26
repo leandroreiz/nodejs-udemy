@@ -6,6 +6,7 @@ const {
   getAllUsers,
   getUser,
   updateUser,
+  createUser,
   deleteUser,
   getCurrentUser,
   updateCurrentUser,
@@ -15,6 +16,7 @@ const {
   signup,
   login,
   protect,
+  restrictTo,
   forgotPassword,
   resetPassword,
   updatePassword,
@@ -25,18 +27,22 @@ const {
 // ----------------------------------------------
 const router = express.Router();
 
+// Free access routes
 router.post('/signup', signup);
 router.post('/login', login);
-
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);
-router.patch('/updateMyPassword', protect, updatePassword);
 
-router.get('/currentUser', protect, getCurrentUser, getUser);
-router.patch('/updateCurrentUser', protect, updateCurrentUser);
-router.delete('/deleteCurrentUser', protect, deleteCurrentUser);
+// Routes after this middleware are protected
+router.use(protect);
+router.patch('/updateMyPassword', updatePassword);
+router.get('/currentUser', getCurrentUser, getUser);
+router.patch('/updateCurrentUser', updateCurrentUser);
+router.delete('/deleteCurrentUser', deleteCurrentUser);
 
-router.route('/').get(getAllUsers);
+// Routes restricted to admin access
+router.use(restrictTo('admin'));
+router.route('/').get(getAllUsers).post(createUser);
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 module.exports = router;
