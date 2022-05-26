@@ -22,6 +22,15 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 // ----------------------------------------------
+// Read current user details
+// ----------------------------------------------
+
+exports.getCurrentUser = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
+
+// ----------------------------------------------
 // Update current user details
 // ----------------------------------------------
 
