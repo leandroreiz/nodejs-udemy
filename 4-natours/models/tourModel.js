@@ -118,6 +118,13 @@ const tourSchema = new mongoose.Schema(
 );
 
 // ----------------------------------------------
+// Indexes
+// ----------------------------------------------
+
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
+
+// ----------------------------------------------
 // Virtual properties
 // Note: Virtual props can't be used in queries
 // ----------------------------------------------
