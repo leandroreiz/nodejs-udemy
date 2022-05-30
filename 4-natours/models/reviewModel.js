@@ -41,6 +41,12 @@ const reviewSchema = new mongoose.Schema(
 );
 
 // ----------------------------------------------
+// Indexes
+// ----------------------------------------------
+
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
+// ----------------------------------------------
 // Middlewares
 // ----------------------------------------------
 
@@ -53,10 +59,7 @@ reviewSchema.pre(/^find/, function (next) {
   next();
 });
 
-reviewSchema.post('save', function () {
-  this.constructor.calcAverageRatings(this.tour);
-});
-
+// retrieve the document from the database
 reviewSchema.pre(/^findOneAnd/, async function (next) {
   this.reviewDoc = await this.findOne();
   next();
@@ -64,6 +67,10 @@ reviewSchema.pre(/^findOneAnd/, async function (next) {
 
 reviewSchema.post(/^findOneAnd/, async function () {
   await this.reviewDoc.constructor.calcAverageRatings(this.reviewDoc.tour);
+});
+
+reviewSchema.post('save', function () {
+  this.constructor.calcAverageRatings(this.tour);
 });
 
 // ----------------------------------------------
