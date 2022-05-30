@@ -167,11 +167,11 @@ tourSchema.pre(/^find/, function (next) {
 // ----------------------------------------------
 // Aggregation middleware
 // ----------------------------------------------
-tourSchema.pre('aggregate', function (next) {
-  // Add a new match at the beggining of pipeline
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-  next();
-});
+// tourSchema.pre('aggregate', function (next) {
+//   // Add a new match at the beggining of pipeline
+//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+//   next();
+// });
 
 // ----------------------------------------------
 // Create model
