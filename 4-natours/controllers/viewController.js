@@ -9,7 +9,7 @@ const catchAsync = require('../utils/catchAsync');
 // Overview
 // ----------------------------------------------
 
-exports.getOverview = catchAsync(async (req, res) => {
+exports.getOverview = catchAsync(async (req, res, next) => {
   // Get tour data from collection
   const tours = await Tour.find();
 
@@ -24,7 +24,7 @@ exports.getOverview = catchAsync(async (req, res) => {
 // Get tour
 // ----------------------------------------------
 
-exports.getTour = catchAsync(async (req, res) => {
+exports.getTour = catchAsync(async (req, res, next) => {
   // Get data for requested tour (+reviews, +guides)
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
     path: 'reviews',
@@ -37,3 +37,14 @@ exports.getTour = catchAsync(async (req, res) => {
     tour,
   });
 });
+
+// ----------------------------------------------
+// Login
+// ----------------------------------------------
+
+exports.login = (req, res) => {
+  // Render template
+  res.status(200).render('login', {
+    title: 'Log in',
+  });
+};
