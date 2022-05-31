@@ -10,6 +10,7 @@
 // ----------------------------------------------
 
 const express = require('express');
+const path = require('path');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -26,11 +27,21 @@ const reviewRouter = require('./routes/reviewRoutes');
 const app = express();
 
 // ----------------------------------------------
+// PUG engine setup
+// ----------------------------------------------
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+// ----------------------------------------------
 // Global Middlewares
 // ----------------------------------------------
 
 // Set security HTTP headers
 app.use(helmet());
+
+// Serving static files (works closely with PUG)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Http request logger for development environment
 if (process.env.NODE_ENV === 'development') {
@@ -69,12 +80,13 @@ app.use(
   })
 );
 
-// Serving static files
-app.use(express.static(`${__dirname}/public`));
-
 // ----------------------------------------------
 // Routes
 // ----------------------------------------------
+app.get('/', (req, res) => {
+  res.status(200).render('base');
+});
+
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
