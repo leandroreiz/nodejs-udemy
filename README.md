@@ -5,6 +5,7 @@
 - Implement maximum login attempts
 - Confirm user email address after first creating account
 - Implement two-factor authentication
+- Use polyfill with Babel (???)
 
 ## Problems Encountered and Solutions
 
@@ -47,3 +48,14 @@ app.use(
 - The JSON Web Token cookie was not being created on browser. After some checking I realised that I was serving the site from `localhost:8000` and making CORS requests to `127.0.0.1:8000`. After changing the CORS request origin to `localhost:8000` on `app.js` the cookie is being generated with no issues.
 
 - When using `import/export` on `.js` file, the following error was being displayed: _"Parsing error: 'import' and 'export' may appear only with 'sourceType: module'"_, to fix the error I added `javascriptreact` to plugins in `.eslintrc.json`. Source [stackoverflow](https://stackoverflow.com/questions/39158552/ignore-eslint-error-import-and-export-may-only-appear-at-the-top-level).
+
+- `__dirname` is not defined in ES module scope. To solve import and use the `dirname() method` from the `path module`. The `dirname() method` takes a path as a parameter and returns the directory name of the path.
+
+```javascript
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// Now it is possible to use the __dirname variable
+```
