@@ -8,6 +8,7 @@ const {
   getTour,
   login,
 } = require('../controllers/viewController');
+const { protect } = require('../controllers/authController');
 
 // ----------------------------------------------
 // Routes
@@ -17,7 +18,7 @@ const {
 const router = express.Router();
 
 router.get('/', getOverview);
-router.get('/tour/:slug', getTour);
+router.get('/tour/:slug', protect, getTour);
 
 // Login
 router.get('/login', login);

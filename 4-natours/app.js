@@ -13,10 +13,12 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -38,31 +40,46 @@ app.set('views', path.join(__dirname, 'views'));
 // Global Middlewares
 // ----------------------------------------------
 
-// Further HELMET configuration for Security Policy (CSP)
+// CORS policy
+app.use(
+  cors({
+    origin: 'http://localhost:8000',
+    credentials: true,
+  })
+);
+
+// Further HELMET configuration for Content Security Policy (CSP)
+// Source: https://github.com/helmetjs/helmet
 const scriptSrcUrls = [
   'https://unpkg.com/',
   'https://tile.openstreetmap.org',
   'https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js',
 ];
+
 const styleSrcUrls = [
   'https://unpkg.com/',
   'https://tile.openstreetmap.org',
   'https://fonts.googleapis.com/',
 ];
-const connectSrcUrls = ['https://unpkg.com', 'https://tile.openstreetmap.org'];
+
+const connectSrcUrls = [
+  'https://unpkg.com',
+  'https://tile.openstreetmap.org',
+  'https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js',
+  'http://localhost:8000/api/v1/users/login',
+];
+
 const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: [],
-      connectSrc: ["'self'", ...connectSrcUrls],
       scriptSrc: ["'self'", ...scriptSrcUrls],
-      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-      workerSrc: ["'self'", 'blob:'],
-      objectSrc: [],
-      imgSrc: ["'self'", 'blob:', 'data:', 'https:'],
+      connectSrc: ["'self'", ...connectSrcUrls],
       fontSrc: ["'self'", ...fontSrcUrls],
+      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+      imgSrc: ["'self'", 'blob:', 'data:', 'https:'],
+      workerSrc: ["'self'", 'blob:'],
     },
   })
 );
@@ -86,6 +103,7 @@ app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
+app.use(cookieParser());
 
 // Data sanitization against noSQL query injection
 app.use(mongoSanitize());
@@ -106,6 +124,12 @@ app.use(
     ],
   })
 );
+
+// TEST MIDDLEWARE ------------------------------
+app.use((req, res, next) => {
+  console.log(req.cookies);
+  next();
+});
 
 // ----------------------------------------------
 // Routes

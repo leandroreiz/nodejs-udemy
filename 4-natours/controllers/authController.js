@@ -100,11 +100,17 @@ exports.protect = catchAsync(async (req, res, next) => {
   // Get token and check if exists
   let token;
 
+  // Check for token on authorization headers
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
+  }
+
+  // Check for token on browser cookies
+  if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   // Return an error if token doesn't exist
