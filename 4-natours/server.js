@@ -2,8 +2,8 @@
 // Server
 // ----------------------------------------------
 
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+import mongoose from 'mongoose';
+import { config } from 'dotenv';
 
 // ----------------------------------------------
 // Uncaught exception
@@ -15,10 +15,10 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
-dotenv.config({ path: './config.env' });
+config({ path: './config.env' });
 
 // Require app after dotenv
-const app = require('./app');
+import app from './app.js';
 
 const db = process.env.DATABASE.replace(
   '<PASSWORD>',

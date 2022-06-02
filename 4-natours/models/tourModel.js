@@ -1,5 +1,9 @@
-const mongoose = require('mongoose');
-const slugify = require('slugify');
+// ----------------------------------------------
+// Imports
+// ----------------------------------------------
+
+import mongoose from 'mongoose';
+import slugify from 'slugify';
 
 // ----------------------------------------------
 // Create schema
@@ -178,4 +182,4 @@ tourSchema.pre(/^find/, function (next) {
 // ----------------------------------------------
 const Tour = mongoose.model('Tour', tourSchema);
 
-module.exports = Tour;
+export default Tour;

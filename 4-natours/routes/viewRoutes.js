@@ -2,13 +2,9 @@
 // Imports
 // ----------------------------------------------
 
-const express = require('express');
-const {
-  getOverview,
-  getTour,
-  login,
-} = require('../controllers/viewController');
-const { isLoggedIn } = require('../controllers/authController');
+import express from 'express';
+import { getOverview, getTour, login } from '../controllers/viewController.js';
+import { isLoggedIn } from '../controllers/authController.js';
 
 // ----------------------------------------------
 // Routes
@@ -28,4 +24,4 @@ router.get('/login', login);
 // Exports
 // ----------------------------------------------
 
-module.exports = router;
+export default router;

@@ -1,8 +1,9 @@
 // ----------------------------------------------
 // Imports
 // ----------------------------------------------
-const express = require('express');
-const {
+import express from 'express';
+
+import {
   getAllUsers,
   getUser,
   updateUser,
@@ -11,8 +12,8 @@ const {
   getCurrentUser,
   updateCurrentUser,
   deleteCurrentUser,
-} = require('../controllers/userController');
-const {
+} from '../controllers/userController.js';
+import {
   signup,
   login,
   protect,
@@ -20,7 +21,7 @@ const {
   forgotPassword,
   resetPassword,
   updatePassword,
-} = require('../controllers/authController');
+} from '../controllers/authController.js';
 
 // ----------------------------------------------
 // Routes
@@ -45,4 +46,4 @@ router.use(restrictTo('admin'));
 router.route('/').get(getAllUsers).post(createUser);
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
-module.exports = router;
+export default router;

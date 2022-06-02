@@ -2,8 +2,9 @@
 // Imports
 // ----------------------------------------------
 
-const express = require('express');
-const {
+import express from 'express';
+
+import {
   aliasTopTours,
   getAllTours,
   getTour,
@@ -14,9 +15,9 @@ const {
   getMonthlyPlan,
   getToursWithin,
   getDistances,
-} = require('../controllers/tourController');
-const { protect, restrictTo } = require('../controllers/authController');
-const reviewRouter = require('./reviewRoutes');
+} from '../controllers/tourController.js';
+import { protect, restrictTo } from '../controllers/authController.js';
+import reviewRouter from './reviewRoutes.js';
 
 // ----------------------------------------------
 // Routes
@@ -52,4 +53,4 @@ router
   .patch(protect, restrictTo('admin', 'lead-guide'), updateTour)
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
 
-module.exports = router;
+export default router;

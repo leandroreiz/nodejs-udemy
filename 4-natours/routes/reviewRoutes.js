@@ -2,16 +2,17 @@
 // Imports
 // ----------------------------------------------
 
-const express = require('express');
-const {
+import express from 'express';
+
+import {
   setTourUserIds,
   createReview,
   getReviews,
   getReview,
   updateReview,
   deleteReview,
-} = require('../controllers/reviewController');
-const { protect, restrictTo } = require('../controllers/authController');
+} from '../controllers/reviewController.js';
+import { protect, restrictTo } from '../controllers/authController.js';
 
 // ----------------------------------------------
 // Create routes
@@ -37,4 +38,4 @@ router
 // Exports
 // ----------------------------------------------
 
-module.exports = router;
+export default router;

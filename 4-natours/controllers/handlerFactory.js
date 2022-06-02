@@ -2,16 +2,16 @@
 // Imports
 // ----------------------------------------------
 
-const APIFeatures = require('../utils/apiFeatures');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
+import APIFeatures from '../utils/apiFeatures.js';
+import catchAsync from '../utils/catchAsync.js';
+import AppError from '../utils/appError.js';
 
 // ----------------------------------------------
 // Create document
 // ----------------------------------------------
 
-exports.createOne = Model =>
-  catchAsync(async (req, res, next) => {
+export function createOne(Model) {
+  return catchAsync(async (req, res, next) => {
     const doc = await Model.create(req.body);
 
     res.status(201).json({
@@ -21,13 +21,14 @@ exports.createOne = Model =>
       },
     });
   });
+}
 
 // ----------------------------------------------
 // Read document
 // ----------------------------------------------
 
-exports.getOne = (Model, populateOptions) =>
-  catchAsync(async (req, res, next) => {
+export function getOne(Model, populateOptions) {
+  return catchAsync(async (req, res, next) => {
     let query = Model.findById(req.params.id);
     if (populateOptions) query = query.populate(populateOptions);
 
@@ -42,13 +43,14 @@ exports.getOne = (Model, populateOptions) =>
       },
     });
   });
+}
 
 // ----------------------------------------------
 // Read all documents
 // ----------------------------------------------
 
-exports.getAll = Model =>
-  catchAsync(async (req, res, next) => {
+export function getAll(Model) {
+  return catchAsync(async (req, res, next) => {
     // To allow nested GET reviews on Tour
     let filter = {};
     if (req.params.tourId) filter = { tour: req.params.tourId };
@@ -71,13 +73,14 @@ exports.getAll = Model =>
       },
     });
   });
+}
 
 // ----------------------------------------------
 // Update document
 // ----------------------------------------------
 
-exports.updateOne = Model =>
-  catchAsync(async (req, res, next) => {
+export function updateOne(Model) {
+  return catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
@@ -92,13 +95,14 @@ exports.updateOne = Model =>
       },
     });
   });
+}
 
 // ----------------------------------------------
 // Delete document
 // ----------------------------------------------
 
-exports.deleteOne = Model =>
-  catchAsync(async (req, res, next) => {
+export function deleteOne(Model) {
+  return catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndDelete(req.params.id);
 
     if (!doc) return next(new AppError('No document found with that ID', 404));
@@ -108,3 +112,4 @@ exports.deleteOne = Model =>
       data: null,
     });
   });
+}

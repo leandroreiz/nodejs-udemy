@@ -2,8 +2,9 @@
 // Imports
 // ----------------------------------------------
 
-const mongoose = require('mongoose');
-const Tour = require('./tourModel');
+import mongoose from 'mongoose';
+
+import Tour from './tourModel.js';
 
 // ----------------------------------------------
 // Create schema
@@ -114,4 +115,4 @@ const Review = mongoose.model('Review', reviewSchema);
 // Exports
 // ----------------------------------------------
 
-module.exports = Review;
+export default Review;

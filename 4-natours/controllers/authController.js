@@ -2,13 +2,14 @@
 // Imports
 // ----------------------------------------------
 
-const { promisify } = require('util');
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
-const sendEmail = require('../utils/email');
+import { promisify } from 'util';
+import { createHash } from 'crypto';
+import jwt from 'jsonwebtoken';
+
+import User from '../models/userModel.js';
+import catchAsync from '../utils/catchAsync.js';
+import AppError from '../utils/appError.js';
+import sendEmail from '../utils/email.js';
 
 // ----------------------------------------------
 // Sign Token
@@ -53,10 +54,10 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 // ----------------------------------------------
-// Create new user / Signup
+// Sign Up / Create user
 // ----------------------------------------------
 
-exports.signup = catchAsync(async (req, res, next) => {
+export const signup = catchAsync(async (req, res, next) => {
   // Specify fields to avoid admin accounts to be created
   const newUser = await User.create({
     name: req.body.name,
@@ -75,7 +76,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 // Login
 // ----------------------------------------------
 
-exports.login = catchAsync(async (req, res, next) => {
+export const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   // Check if email and password exist
@@ -96,7 +97,7 @@ exports.login = catchAsync(async (req, res, next) => {
 // Protect routes
 // ----------------------------------------------
 
-exports.protect = catchAsync(async (req, res, next) => {
+export const protect = catchAsync(async (req, res, next) => {
   // Get token and check if exists
   let token;
 
@@ -142,7 +143,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 // Check if user is logged in
 // ----------------------------------------------
 
-exports.isLoggedIn = catchAsync(async (req, res, next) => {
+export const isLoggedIn = catchAsync(async (req, res, next) => {
   if (req.cookies.jwt) {
     // Validate token
     const decoded = await promisify(jwt.verify)(
@@ -170,9 +171,8 @@ exports.isLoggedIn = catchAsync(async (req, res, next) => {
 // Restrict access
 // ----------------------------------------------
 
-exports.restrictTo =
-  (...roles) =>
-  (req, res, next) => {
+export function restrictTo(...roles) {
+  return (req, res, next) => {
     if (!roles.includes(req.user.role))
       return next(
         new AppError('You do not have permission to perform this action!', 403)
@@ -180,12 +180,13 @@ exports.restrictTo =
 
     next();
   };
+}
 
 // ----------------------------------------------
 // Forgot password
 // ----------------------------------------------
 
-exports.forgotPassword = catchAsync(async (req, res, next) => {
+export const forgotPassword = catchAsync(async (req, res, next) => {
   // Get user based on posted email
   const user = await User.findOne({ email: req.body.email });
   if (!user)
@@ -231,10 +232,9 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 // Reset password
 // ----------------------------------------------
 
-exports.resetPassword = catchAsync(async (req, res, next) => {
+export const resetPassword = catchAsync(async (req, res, next) => {
   // Get user based on token
-  const hashedToken = crypto
-    .createHash('sha256')
+  const hashedToken = createHash('sha256')
     .update(req.params.token)
     .digest('hex');
 
@@ -261,7 +261,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 // Update password
 // ----------------------------------------------
 
-exports.updatePassword = catchAsync(async (req, res, next) => {
+export const updatePassword = catchAsync(async (req, res, next) => {
   // Get user
   const user = await User.findById(req.user._id).select('+password');
 

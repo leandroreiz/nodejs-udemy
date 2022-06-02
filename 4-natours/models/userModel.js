@@ -2,10 +2,10 @@
 // Imports
 // ----------------------------------------------
 
-const crypto = require('crypto');
-const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcryptjs');
+import { randomBytes, createHash } from 'crypto';
+import mongoose from 'mongoose';
+import validator from 'validator';
+import bcrypt from 'bcryptjs';
 
 // ----------------------------------------------
 // Create schema
@@ -136,10 +136,9 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 // Create password reset token
 
 userSchema.methods.createPasswordResetToken = function () {
-  const resetToken = crypto.randomBytes(32).toString('hex');
+  const resetToken = randomBytes(32).toString('hex');
 
-  this.passwordResetToken = crypto
-    .createHash('sha256')
+  this.passwordResetToken = createHash('sha256')
     .update(resetToken)
     .digest('hex');
 
@@ -152,4 +151,4 @@ userSchema.methods.createPasswordResetToken = function () {
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+export default User;

@@ -2,7 +2,7 @@
 // Imports
 // ----------------------------------------------
 
-const AppError = require('../utils/appError');
+import AppError from '../utils/appError.js';
 
 // ----------------------------------------------
 // Cast error handling
@@ -91,7 +91,7 @@ const sendErrorProd = (err, res) => {
 // Check for environment
 // ----------------------------------------------
 
-module.exports = (err, req, res, next) => {
+export default (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 

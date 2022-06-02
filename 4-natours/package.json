@@ -2,15 +2,23 @@
   "name": "natours",
   "version": "1.0.0",
   "description": "Learning Node.Js, Express and Mongo DB",
+  "type": "module",
   "main": "app.js",
+  "source": "./public/js/index.js",
+  "targets": {
+    "main": false
+  },
   "scripts": {
     "start": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production&&nodemon server.js",
+    "parcel:dev": "parcel ./public/js/index.js",
+    "parcel:build": "parcel build",
     "debug": "ndb server.js"
   },
   "author": "Leandro Reis",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -30,6 +38,7 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "buffer": "^6.0.3",
     "eslint": "^8.14.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
@@ -39,7 +48,9 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "ndb": "^1.1.5",
-    "prettier": "^2.6.2"
+    "parcel": "^2.6.0",
+    "prettier": "^2.6.2",
+    "process": "^0.11.10"
   },
   "engines": {
     "node": ">=10.0.0"
