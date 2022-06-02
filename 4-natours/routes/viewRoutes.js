@@ -8,18 +8,19 @@ const {
   getTour,
   login,
 } = require('../controllers/viewController');
-const { protect } = require('../controllers/authController');
+const { isLoggedIn } = require('../controllers/authController');
 
 // ----------------------------------------------
 // Routes
 // ----------------------------------------------
 
-// Tours pages
 const router = express.Router();
 
-router.get('/', getOverview);
-router.get('/tour/:slug', protect, getTour);
+router.use(isLoggedIn);
 
+// Tours pages
+router.get('/', getOverview);
+router.get('/tour/:slug', getTour);
 // Login
 router.get('/login', login);
 
