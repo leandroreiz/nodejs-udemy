@@ -4,12 +4,13 @@
 // Imports
 // ----------------------------------------------
 
-import { login } from './login.js';
+import { login, logout } from './login.js';
 import displayMap from './leaflet.js';
 
 // DOM elements
 const map = document.getElementById('map');
 const loginForm = document.querySelector('.form');
+const logoutBtn = document.querySelector('.nav__el--logout');
 
 // ----------------------------------------------
 // Delegation
@@ -21,7 +22,7 @@ if (map) {
   displayMap(locations);
 }
 
-// Submit handler
+// Submit login form
 if (loginForm)
   loginForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -32,3 +33,6 @@ if (loginForm)
 
     login(email, password);
   });
+
+// User logout
+if (logoutBtn) logoutBtn.addEventListener('click', logout);

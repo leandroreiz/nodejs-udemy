@@ -16,6 +16,7 @@ import {
 import {
   signup,
   login,
+  logout,
   protect,
   restrictTo,
   forgotPassword,
@@ -31,6 +32,7 @@ const router = express.Router();
 // Free access routes
 router.post('/signup', signup);
 router.post('/login', login);
+router.get('/logout', logout);
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);
 

@@ -11,7 +11,7 @@
   "scripts": {
     "start": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production&&nodemon server.js",
-    "parcel:dev": "parcel ./public/js/index.js",
+    "parcel:dev": "parcel",
     "parcel:build": "parcel build",
     "debug": "ndb server.js"
   },
