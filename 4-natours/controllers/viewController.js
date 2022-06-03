@@ -3,7 +3,12 @@
 // ----------------------------------------------
 
 import Tour from '../models/tourModel.js';
+import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
+
+// ----------------------------------------------
+// Overview of all available tours
+// ----------------------------------------------
 
 export const getOverview = catchAsync(async (req, res, next) => {
   // Get tour data from collection
@@ -16,12 +21,18 @@ export const getOverview = catchAsync(async (req, res, next) => {
   });
 });
 
+// ----------------------------------------------
+// Get a tour
+// ----------------------------------------------
+
 export const getTour = catchAsync(async (req, res, next) => {
   // Get data for requested tour (+reviews, +guides)
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
     path: 'reviews',
     fields: 'review rating user',
   });
+
+  if (!tour) return next(new AppError('This tour does not exist!', 404));
 
   // Render template using data retrieved
   res.status(200).render('tour', {
