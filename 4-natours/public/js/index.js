@@ -5,12 +5,17 @@
 // ----------------------------------------------
 
 import { login, logout } from './login.js';
+import { updateData } from './updateSettings.js';
 import displayMap from './leaflet.js';
 
+// ----------------------------------------------
 // DOM elements
+// ----------------------------------------------
+
 const map = document.getElementById('map');
-const loginForm = document.getElementById('form--login');
+const formLogin = document.getElementById('form--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
+const formUserData = document.querySelector('.form-user-data');
 
 // ----------------------------------------------
 // Delegation
@@ -23,8 +28,8 @@ if (map) {
 }
 
 // Submit login form
-if (loginForm)
-  loginForm.addEventListener('submit', e => {
+if (formLogin)
+  formLogin.addEventListener('submit', e => {
     e.preventDefault();
 
     // Log in form values
@@ -36,3 +41,15 @@ if (loginForm)
 
 // User logout
 if (logoutBtn) logoutBtn.addEventListener('click', logout);
+
+// Update current user details
+if (formUserData) {
+  formUserData.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+
+    updateData(name, email);
+  });
+}

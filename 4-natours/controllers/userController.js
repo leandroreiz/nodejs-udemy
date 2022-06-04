@@ -30,6 +30,10 @@ export function getCurrentUser(req, res, next) {
   next();
 }
 
+// ----------------------------------------------
+// Update current user details
+// ----------------------------------------------
+
 export const updateCurrentUser = catchAsync(async (req, res, next) => {
   // Displays error if user tries to update password data
   if (req.body.password || req.body.passwordConfirm)
@@ -56,6 +60,10 @@ export const updateCurrentUser = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+// ----------------------------------------------
+// Delete current user
+// ----------------------------------------------
 
 export const deleteCurrentUser = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, { active: false });
