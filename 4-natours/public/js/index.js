@@ -4,9 +4,9 @@
 // Imports
 // ----------------------------------------------
 
-import { login, logout } from './login.js';
-import { updateData } from './updateSettings.js';
 import displayMap from './leaflet.js';
+import { login, logout } from './login.js';
+import { updateSettings } from './updateSettings.js';
 
 // ----------------------------------------------
 // DOM elements
@@ -16,6 +16,7 @@ const map = document.getElementById('map');
 const formLogin = document.getElementById('form--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const formUserData = document.querySelector('.form-user-data');
+const formUserPassword = document.querySelector('.form-user-password');
 
 // ----------------------------------------------
 // Delegation
@@ -50,6 +51,32 @@ if (formUserData) {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
 
-    updateData(name, email);
+    updateSettings({ name, email }, 'data');
+  });
+}
+
+// Change current user password
+if (formUserPassword) {
+  formUserPassword.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    document.querySelector('.btn--save-password').textContent = 'Updating...';
+
+    const passwordCurrent = document.getElementById('password-current').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+
+    await updateSettings(
+      { passwordCurrent, password, passwordConfirm },
+      'password'
+    );
+
+    // Update btn text
+    document.querySelector('.btn--save-password').textContent = 'Save Password';
+
+    // Clear fields after update
+    document.getElementById('password-current').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('password-confirm').value = '';
   });
 }

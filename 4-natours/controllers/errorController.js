@@ -87,7 +87,7 @@ const sendErrorProd = (err, req, res) => {
 
     // Programming or some unknown error - Don't leak error details to client
     console.error('🔴 Unknown error:', err);
-    return res.status(500).json({
+    return res.status(err.statusCode).json({
       status: 'error',
       message: 'Something went wrong!',
     });
