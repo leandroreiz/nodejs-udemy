@@ -12,6 +12,7 @@ import {
   getCurrentUser,
   updateCurrentUser,
   deleteCurrentUser,
+  uploadUserPhoto,
 } from '../controllers/userController.js';
 import {
   signup,
@@ -40,7 +41,7 @@ router.patch('/resetPassword/:token', resetPassword);
 router.use(protect);
 router.patch('/updateMyPassword', updatePassword);
 router.get('/currentUser', getCurrentUser, getUser);
-router.patch('/updateCurrentUser', updateCurrentUser);
+router.patch('/updateCurrentUser', uploadUserPhoto, updateCurrentUser);
 router.delete('/deleteCurrentUser', deleteCurrentUser);
 
 // Routes restricted to admin access

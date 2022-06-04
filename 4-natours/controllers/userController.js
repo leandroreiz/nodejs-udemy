@@ -1,11 +1,46 @@
 // ----------------------------------------------
 // Imports
 // ----------------------------------------------
+import multer from 'multer';
 
 import User from '../models/userModel.js';
 import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
 import { getAll, getOne, updateOne, deleteOne } from './handlerFactory.js';
+
+// ----------------------------------------------
+// Multer config
+// ----------------------------------------------
+
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/img/users');
+  },
+  filename: (req, file, cb) => {
+    const ext = file.mimetype.split('/')[1];
+    cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
+  },
+});
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) cb(null, true);
+  else
+    cb(
+      new AppError(
+        'The file uploaded is not an image! Please upload an image file.',
+        400
+      ),
+      false
+    );
+};
+
+// Pass variables to multer middleware
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+export const uploadUserPhoto = upload.single('photo');
 
 // ----------------------------------------------
 // Helper function to filter objects
