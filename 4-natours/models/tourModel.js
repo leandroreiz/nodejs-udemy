@@ -8,6 +8,7 @@ import slugify from 'slugify';
 // ----------------------------------------------
 // Create schema
 // ----------------------------------------------
+
 const tourSchema = new mongoose.Schema(
   {
     name: {
@@ -134,6 +135,7 @@ tourSchema.index({ startLocation: '2dsphere' });
 // Virtual properties
 // Note: Virtual props can't be used in queries
 // ----------------------------------------------
+
 tourSchema.virtual('durationInWeeks').get(function () {
   return this.duration / 7;
 });
@@ -149,6 +151,7 @@ tourSchema.virtual('reviews', {
 // Document middleware
 // Note: Runs before .save() and .create(), only
 // ----------------------------------------------
+
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
@@ -157,6 +160,7 @@ tourSchema.pre('save', function (next) {
 // ----------------------------------------------
 // Query middleware
 // ----------------------------------------------
+
 tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } });
 
@@ -171,6 +175,7 @@ tourSchema.pre(/^find/, function (next) {
 // ----------------------------------------------
 // Aggregation middleware
 // ----------------------------------------------
+
 // tourSchema.pre('aggregate', function (next) {
 //   // Add a new match at the beggining of pipeline
 //   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
@@ -180,6 +185,7 @@ tourSchema.pre(/^find/, function (next) {
 // ----------------------------------------------
 // Create model
 // ----------------------------------------------
+
 const Tour = mongoose.model('Tour', tourSchema);
 
 export default Tour;

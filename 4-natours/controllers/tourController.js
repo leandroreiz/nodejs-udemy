@@ -2,6 +2,9 @@
 // Imports
 // ----------------------------------------------
 
+import multer from 'multer';
+import sharp from 'sharp';
+
 import Tour from '../models/tourModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import {
@@ -12,6 +15,44 @@ import {
   deleteOne,
 } from './handlerFactory.js';
 import AppError from '../utils/appError.js';
+
+// ----------------------------------------------
+// Multer config (uploading files)
+// ----------------------------------------------
+
+// Using the buffer
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) cb(null, true);
+  else
+    cb(
+      new AppError(
+        'The file uploaded is not an image! Please upload an image file.',
+        400
+      ),
+      false
+    );
+};
+
+// Pass variables to multer middleware
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+export const uploadTourImages = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 3 },
+]);
+
+// ----------------------------------------------
+// Resize tour images
+// ----------------------------------------------
+
+export const resizeTourImages = (req, res, next) => {
+  next();
+};
 
 // ----------------------------------------------
 // Top 5 tours (middleware)
