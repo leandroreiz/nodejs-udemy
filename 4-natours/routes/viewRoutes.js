@@ -3,8 +3,14 @@
 // ----------------------------------------------
 
 import express from 'express';
-import { getOverview, getTour, login } from '../controllers/viewController.js';
-import { isLoggedIn } from '../controllers/authController.js';
+import {
+  getTour,
+  getOverview,
+  getAccount,
+  login,
+  updateUserData,
+} from '../controllers/viewController.js';
+import { isLoggedIn, protect } from '../controllers/authController.js';
 
 // ----------------------------------------------
 // Routes
@@ -12,13 +18,16 @@ import { isLoggedIn } from '../controllers/authController.js';
 
 const router = express.Router();
 
-router.use(isLoggedIn);
-
 // Tours pages
-router.get('/', getOverview);
-router.get('/tour/:slug', getTour);
+router.get('/', isLoggedIn, getOverview);
+router.get('/tour/:slug', isLoggedIn, getTour);
+
 // Login
-router.get('/login', login);
+router.get('/login', isLoggedIn, login);
+
+// User
+router.get('/user', protect, getAccount);
+router.post('/submit-user-data', protect, updateUserData);
 
 // ----------------------------------------------
 // Exports

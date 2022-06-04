@@ -9,7 +9,7 @@ import displayMap from './leaflet.js';
 
 // DOM elements
 const map = document.getElementById('map');
-const loginForm = document.querySelector('.form');
+const loginForm = document.getElementById('form--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
 
 // ----------------------------------------------

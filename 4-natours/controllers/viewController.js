@@ -3,6 +3,7 @@
 // ----------------------------------------------
 
 import Tour from '../models/tourModel.js';
+import User from '../models/userModel.js';
 import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
 
@@ -51,3 +52,37 @@ export function login(req, res) {
     title: 'Log in',
   });
 }
+
+// ----------------------------------------------
+// Get account
+// ----------------------------------------------
+
+export const getAccount = (req, res) => {
+  // Render template
+  res.status(200).render('account', {
+    title: 'Your account',
+  });
+};
+
+// ----------------------------------------------
+// Update user data
+// ----------------------------------------------
+
+export const updateUserData = catchAsync(async (req, res, next) => {
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user.id,
+    {
+      name: req.body.name,
+      email: req.body.email,
+    },
+    {
+      new: true,
+      reuValidators: true,
+    }
+  );
+
+  res.status(200).render('account', {
+    title: 'Your account',
+    user: updatedUser,
+  });
+});
