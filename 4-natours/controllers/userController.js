@@ -13,6 +13,7 @@ import { getAll, getOne, updateOne, deleteOne } from './handlerFactory.js';
 // Multer config (uploading files)
 // ----------------------------------------------
 
+// Uploading to file system
 // const multerStorage = multer.diskStorage({
 //   destination: (req, file, cb) => {
 //     cb(null, 'public/img/users');
@@ -23,6 +24,7 @@ import { getAll, getOne, updateOne, deleteOne } from './handlerFactory.js';
 //   },
 // });
 
+// Using the buffer
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
