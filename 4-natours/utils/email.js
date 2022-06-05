@@ -1,8 +1,13 @@
-import { createTransport } from 'nodemailer';
+import nodemailer from 'nodemailer';
 import htmlToText from 'html-to-text';
+import { fileURLToPath } from 'url';
+import path from 'path';
 import pug from 'pug';
 
-export class Email {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+class Email {
   constructor(user, url) {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
@@ -17,7 +22,7 @@ export class Email {
     }
 
     // Create a transporter
-    return createTransport({
+    return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
       auth: {
@@ -56,3 +61,5 @@ export class Email {
     await this.send('welcome', 'Welcome to the Natours Family!');
   }
 }
+
+export default Email;
