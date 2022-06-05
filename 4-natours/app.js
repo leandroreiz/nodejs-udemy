@@ -26,6 +26,7 @@ import viewRouter from './routes/viewRoutes.js';
 import tourRouter from './routes/tourRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import reviewRouter from './routes/reviewRoutes.js';
+import bookingRouter from './routes/bookingRoutes.js';
 import globalErrorHandler from './controllers/errorController.js';
 
 const app = express();
@@ -152,6 +153,9 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+
+// Booking route
+app.use('/api/v1/bookings', bookingRouter);
 
 // Dealing with unknown urls
 app.all('*', (req, res, next) => {
