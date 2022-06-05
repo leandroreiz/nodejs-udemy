@@ -59,10 +59,13 @@ app.use(
 
 // Further HELMET configuration for Content Security Policy (CSP)
 // Source: https://github.com/helmetjs/helmet
+const defaultSrcUrls = ['https://js.stripe.com/'];
+
 const scriptSrcUrls = [
   'https://unpkg.com/',
   'https://tile.openstreetmap.org',
   'https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js',
+  'https://js.stripe.com/v3/',
 ];
 
 const styleSrcUrls = [
@@ -72,10 +75,12 @@ const styleSrcUrls = [
 ];
 
 const connectSrcUrls = [
+  'https://*.stripe.com',
   'https://unpkg.com',
   'https://tile.openstreetmap.org',
-  'https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js',
+  'https://*.cloudflare.com',
   'http://localhost:8000/api/v1/users/login',
+  'http://localhost/api/v1/bookings/checkout-session/',
 ];
 
 const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
@@ -83,6 +88,7 @@ const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
+      defaultSrc: ["'self'", ...defaultSrcUrls],
       scriptSrc: ["'self'", ...scriptSrcUrls],
       connectSrc: ["'self'", ...connectSrcUrls],
       fontSrc: ["'self'", ...fontSrcUrls],

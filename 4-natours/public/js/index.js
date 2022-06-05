@@ -5,6 +5,7 @@
 // ----------------------------------------------
 
 import displayMap from './leaflet.js';
+import { bookTour } from './stripe.js';
 import { login, logout } from './login.js';
 import { updateSettings } from './updateSettings.js';
 
@@ -13,6 +14,7 @@ import { updateSettings } from './updateSettings.js';
 // ----------------------------------------------
 
 const map = document.getElementById('map');
+const bookBtn = document.getElementById('book-tour');
 const formLogin = document.getElementById('form--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const formUserData = document.querySelector('.form-user-data');
@@ -82,3 +84,11 @@ if (formUserPassword) {
     document.getElementById('password-confirm').value = '';
   });
 }
+
+// Book tour using Stripe
+if (bookBtn)
+  bookBtn.addEventListener('click', e => {
+    e.target.textContent = 'Processing...';
+    const { tourId } = e.target.dataset;
+    bookTour(tourId);
+  });
