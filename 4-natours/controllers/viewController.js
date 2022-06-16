@@ -4,6 +4,7 @@
 
 import Tour from '../models/tourModel.js';
 import User from '../models/userModel.js';
+import Booking from '../models/bookingModel.js';
 import AppError from '../utils/appError.js';
 import catchAsync from '../utils/catchAsync.js';
 
@@ -63,6 +64,24 @@ export const getAccount = (req, res) => {
     title: 'Your account',
   });
 };
+
+// ----------------------------------------------
+// Get current user tours
+// ----------------------------------------------
+
+export const getMyBookings = catchAsync(async (req, res, next) => {
+  // Find all bookings
+  const bookings = await Booking.find({ user: req.user.id });
+
+  // Find tours with the returned IDs
+  const tourIDs = bookings.map(el => el.tour);
+  const tours = await Tour.find({ _id: { $in: tourIDs } });
+
+  res.status(200).render('overview', {
+    title: 'My Bookings',
+    tours,
+  });
+});
 
 // ----------------------------------------------
 // Update user data

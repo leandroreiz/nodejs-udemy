@@ -9,6 +9,7 @@ import {
   getAccount,
   login,
   updateUserData,
+  getMyBookings,
 } from '../controllers/viewController.js';
 import { isLoggedIn, protect } from '../controllers/authController.js';
 import { createBookingCheckout } from '../controllers/bookingController.js';
@@ -28,6 +29,7 @@ router.get('/login', isLoggedIn, login);
 
 // User
 router.get('/user', protect, getAccount);
+router.get('/my-bookings', protect, getMyBookings);
 router.post('/submit-user-data', protect, updateUserData);
 
 // ----------------------------------------------

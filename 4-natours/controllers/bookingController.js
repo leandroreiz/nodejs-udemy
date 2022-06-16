@@ -48,13 +48,12 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
 });
 
 export const createBookingCheckout = catchAsync(async (req, res, next) => {
-  // This is temporary as this code is not secure
-  const {tour, user, price} = req.query;
+  // This is TEMPORARY as this code is not secure
+  const { tour, user, price } = req.query;
 
   if (!tour && !user && !price) return next();
 
-  await Booking.create({tour, user, price});
+  await Booking.create({ tour, user, price });
 
-  res.redirect(req.originalUrl.split('?')[0])
-
+  res.redirect(req.originalUrl.split('?')[0]);
 });
