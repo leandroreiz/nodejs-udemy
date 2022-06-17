@@ -5,8 +5,15 @@
 import Stripe from 'stripe';
 
 import Tour from '../models/tourModel.js';
-import catchAsync from '../utils/catchAsync.js';
 import Booking from '../models/bookingModel.js';
+import catchAsync from '../utils/catchAsync.js';
+import {
+  getOne,
+  getAll,
+  createOne,
+  updateOne,
+  deleteOne,
+} from '../controllers/handlerFactory.js';
 
 // ----------------------------------------------
 // Create a stripe checkout session
@@ -47,6 +54,10 @@ export const getCheckoutSession = catchAsync(async (req, res, next) => {
   });
 });
 
+// ----------------------------------------------
+// Create booking checkout
+// ----------------------------------------------
+
 export const createBookingCheckout = catchAsync(async (req, res, next) => {
   // This is TEMPORARY as this code is not secure
   const { tour, user, price } = req.query;
@@ -57,3 +68,13 @@ export const createBookingCheckout = catchAsync(async (req, res, next) => {
 
   res.redirect(req.originalUrl.split('?')[0]);
 });
+
+// ----------------------------------------------
+// Booking CRUD methods
+// ----------------------------------------------
+
+export const createBooking = createOne(Booking);
+export const getBooking = getOne(Booking);
+export const getBookings = getAll(Booking);
+export const updateBooking = updateOne(Booking);
+export const deleteBooking = deleteOne(Booking);
