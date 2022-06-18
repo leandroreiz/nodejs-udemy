@@ -30,7 +30,17 @@ import reviewRouter from './routes/reviewRoutes.js';
 import bookingRouter from './routes/bookingRoutes.js';
 import globalErrorHandler from './controllers/errorController.js';
 
+// ----------------------------------------------
+// Start express app
+// ----------------------------------------------
+
 const app = express();
+
+// ----------------------------------------------
+// Trust proxy
+// ----------------------------------------------
+
+app.enable('trust proxy');
 
 // ----------------------------------------------
 // Set up __dirname
