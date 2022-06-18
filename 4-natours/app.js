@@ -17,6 +17,7 @@ import helmet from 'helmet';
 import xss from 'xss-clean';
 import express from 'express';
 import { fileURLToPath } from 'url';
+import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import mongoSanitize from 'express-mongo-sanitize';
@@ -140,6 +141,9 @@ app.use(
     ],
   })
 );
+
+// Compress text send to client
+app.use(compression());
 
 // TEST MIDDLEWARE ------------------------------
 // app.use((req, res, next) => {
