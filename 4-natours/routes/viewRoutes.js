@@ -10,9 +10,9 @@ import {
   login,
   updateUserData,
   getMyBookings,
+  alerts,
 } from '../controllers/viewController.js';
 import { isLoggedIn, protect } from '../controllers/authController.js';
-import { createBookingCheckout } from '../controllers/bookingController.js';
 
 // ----------------------------------------------
 // Routes
@@ -20,8 +20,10 @@ import { createBookingCheckout } from '../controllers/bookingController.js';
 
 const router = express.Router();
 
+router.use(alerts);
+
 // Tours pages
-router.get('/', createBookingCheckout, isLoggedIn, getOverview);
+router.get('/', isLoggedIn, getOverview);
 router.get('/tour/:slug', isLoggedIn, getTour);
 
 // Login
@@ -29,7 +31,7 @@ router.get('/login', isLoggedIn, login);
 
 // User
 router.get('/user', protect, getAccount);
-router.get('/my-bookings', protect, getMyBookings);
+router.get('/my-bookings/', protect, getMyBookings);
 router.post('/submit-user-data', protect, updateUserData);
 
 // ----------------------------------------------

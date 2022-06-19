@@ -15,7 +15,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import xss from 'xss-clean';
-import express from 'express';
+import express, { application } from 'express';
 import { fileURLToPath } from 'url';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
@@ -29,6 +29,7 @@ import userRouter from './routes/userRoutes.js';
 import reviewRouter from './routes/reviewRoutes.js';
 import bookingRouter from './routes/bookingRoutes.js';
 import globalErrorHandler from './controllers/errorController.js';
+import { webhookCheckout } from './controllers/bookingController.js';
 
 // ----------------------------------------------
 // Start express app
@@ -61,12 +62,8 @@ app.set('views', path.join(__dirname, 'views'));
 // ----------------------------------------------
 
 // CORS policy
-app.use(
-  cors({
-    origin: 'http://localhost:8000',
-    credentials: true,
-  })
-);
+app.use(cors());
+app.options('*', cors());
 
 // Further HELMET configuration for Content Security Policy (CSP)
 // Source: https://github.com/helmetjs/helmet
@@ -126,6 +123,13 @@ const limiter = rateLimit({
     'Too many consecutive requests were attempted! Please try again in an hour!',
 });
 app.use('/api', limiter);
+
+// Stripe webhook
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  webhookCheckout
+);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
