@@ -2,9 +2,9 @@
 
 ## Bugs and Delays
 
-- Error message `jwt malformed` is displayed when trying to logout from /user page, if loggin out from other pages the error is not displayed
+- Error message `jwt malformed` is displayed when trying to logout from /user page, if loggin out from other pages the error is not displayed **(solved redirecting the user to the home page)**
+- The payment succeeded but the tours page keep displaying the message `stripe.js:13 Uncaught ReferenceError: Stripe is not defined at stripe.js:13:16` on console **(solved after the improvement on Stripe process using webhooks)**
 - SendGrid blocked my account saying it was high risk and an email was sent to support, waiting account creation to be confirmed (class #209)
-- The payment succeeded but the tours page keep displaying the message `stripe.js:13 Uncaught ReferenceError: Stripe is not defined at stripe.js:13:16` on console
 
 ## Possible Improvements
 
