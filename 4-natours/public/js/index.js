@@ -5,6 +5,8 @@
 // ----------------------------------------------
 
 import displayMap from './leaflet.js';
+
+import { signup } from './signup.js';
 import { bookTour } from './stripe.js';
 import { showAlert } from './alerts.js';
 import { login, logout } from './login.js';
@@ -17,6 +19,7 @@ import { updateSettings } from './updateSettings.js';
 const map = document.getElementById('map');
 const bookBtn = document.getElementById('book-tour');
 const formLogin = document.getElementById('form--login');
+const formSignUp = document.getElementById('form--signup');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const formUserData = document.querySelector('.form-user-data');
 const formUserPassword = document.querySelector('.form-user-password');
@@ -30,6 +33,20 @@ if (map) {
   const locations = JSON.parse(map.dataset.locations);
   displayMap(locations);
 }
+
+// Submit create user form
+if (formSignUp)
+  formSignUp.addEventListener('submit', e => {
+    e.preventDefault();
+
+    // Sign up form values
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+
+    signup(name, email, password, passwordConfirm);
+  });
 
 // Submit login form
 if (formLogin)

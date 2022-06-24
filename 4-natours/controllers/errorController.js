@@ -18,7 +18,8 @@ const handleCastErrorDB = err => {
 // ----------------------------------------------
 
 const handleDuplicateFieldsDB = err => {
-  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
+  console.log(err);
+  const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
   const message = `Duplicate field value: ${value}. Please use another value!`;
 
   return new AppError(message, 400);
@@ -121,6 +122,8 @@ export default (err, req, res, next) => {
 
   if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
+    error.message = err.message;
+
     // @BUG / FIXED: but still need to check if it is okay to use 'err' to pass as a parameter
     if (err.name === 'CastError') error = handleCastErrorDB(error); // was using err
     if (err.code === 11000) error = handleDuplicateFieldsDB(error);

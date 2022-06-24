@@ -55,6 +55,17 @@ export function login(req, res) {
 }
 
 // ----------------------------------------------
+// Sign up
+// ----------------------------------------------
+
+export function signup(req, res) {
+  // Render template
+  res.status(200).render('signup', {
+    title: 'Sign Up',
+  });
+}
+
+// ----------------------------------------------
 // Get account
 // ----------------------------------------------
 

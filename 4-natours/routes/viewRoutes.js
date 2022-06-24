@@ -8,6 +8,7 @@ import {
   getOverview,
   getAccount,
   login,
+  signup,
   updateUserData,
   getMyBookings,
   alerts,
@@ -28,6 +29,9 @@ router.get('/tour/:slug', isLoggedIn, getTour);
 
 // Login
 router.get('/login', isLoggedIn, login);
+
+// Create user
+router.get('/signup', signup);
 
 // User
 router.get('/user', protect, getAccount);

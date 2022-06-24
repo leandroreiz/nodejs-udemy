@@ -1,6 +1,6 @@
 // ----------------------------------------------
 // NATOURS APP
-// Ver.: 2.0.0
+// Ver.: 2.0.1
 // Original Design: Jonas Schmedtmann
 // Coded by Leandro Reis
 // ----------------------------------------------
@@ -15,7 +15,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import xss from 'xss-clean';
-import express, { application } from 'express';
+import express from 'express';
 import { fileURLToPath } from 'url';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
