@@ -16,10 +16,16 @@ class Email {
   }
 
   newTransport() {
-    // if (process.env.NODE_ENV === 'production') {
-    //   // Sendgrid
-    //   return 1;
-    // }
+    if (process.env.NODE_ENV === 'production') {
+      // Sendgrid
+      return nodemailer.createTransport({
+        service: 'SendGrid',
+        auth: {
+          user: process.env.SENDGRID_USERNAME,
+          pass: process.env.SENDGRID_PASSWORD,
+        },
+      });
+    }
 
     // Create a transporter
     return nodemailer.createTransport({
